@@ -1,0 +1,115 @@
+// Built-in content, so the fun commands work offline and never depend on another website.
+// Trivia format: [category, difficulty, question, correct answer, [3 wrong answers]]
+const TRIVIA_CATEGORIES = { general: '🌍 General', science: '🔬 Science', geography: '🗺️ Geography', history: '🏛️ History', entertainment: '🎮 Entertainment' };
+const TRIVIA = [
+    ['general', 'easy', 'How many days are there in a leap year?', '366', ['365', '364', '367']],
+    ['general', 'easy', 'Which colour do you get by mixing blue and yellow?', 'Green', ['Orange', 'Purple', 'Brown']],
+    ['general', 'easy', 'How many continents are there?', '7', ['5', '6', '8']],
+    ['general', 'easy', 'Which ocean is the largest?', 'Pacific Ocean', ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean']],
+    ['general', 'easy', 'How many strings does a standard guitar have?', '6', ['4', '5', '8']],
+    ['general', 'medium', 'In which sport can you score a "birdie"?', 'Golf', ['Tennis', 'Badminton', 'Cricket']],
+    ['general', 'medium', 'Which language has the most native speakers in the world?', 'Mandarin Chinese', ['English', 'Spanish', 'Hindi']],
+    ['general', 'medium', 'How many players are on the pitch for one football (soccer) team?', '11', ['9', '10', '12']],
+    ['science', 'easy', 'What is the chemical symbol for gold?', 'Au', ['Ag', 'Go', 'Gd']],
+    ['science', 'easy', 'Which planet is closest to the Sun?', 'Mercury', ['Venus', 'Mars', 'Earth']],
+    ['science', 'easy', 'Which is the largest planet in our solar system?', 'Jupiter', ['Saturn', 'Neptune', 'Earth']],
+    ['science', 'easy', 'At sea level, at what temperature does water boil?', '100 °C', ['90 °C', '110 °C', '80 °C']],
+    ['science', 'easy', 'Which gas do plants take in from the air?', 'Carbon dioxide', ['Oxygen', 'Nitrogen', 'Helium']],
+    ['science', 'medium', 'What is the hardest natural substance?', 'Diamond', ['Gold', 'Quartz', 'Iron']],
+    ['science', 'medium', 'How many bones does an adult human body have?', '206', ['186', '256', '300']],
+    ['science', 'medium', 'Which part of a cell is called its "powerhouse"?', 'Mitochondria', ['Nucleus', 'Ribosome', 'Membrane']],
+    ['science', 'medium', 'What is the chemical symbol for sodium?', 'Na', ['So', 'Sd', 'S']],
+    ['science', 'hard', 'Which gas makes up most of Earth\'s atmosphere?', 'Nitrogen', ['Oxygen', 'Carbon dioxide', 'Argon']],
+    ['geography', 'easy', 'What is the capital city of Japan?', 'Tokyo', ['Kyoto', 'Osaka', 'Seoul']],
+    ['geography', 'easy', 'Kuala Lumpur is the capital of which country?', 'Malaysia', ['Indonesia', 'Thailand', 'Singapore']],
+    ['geography', 'easy', 'Which is the largest country in the world by area?', 'Russia', ['Canada', 'China', 'United States']],
+    ['geography', 'easy', 'Mount Everest is part of which mountain range?', 'The Himalayas', ['The Andes', 'The Alps', 'The Rockies']],
+    ['geography', 'medium', 'What is the capital city of Australia?', 'Canberra', ['Sydney', 'Melbourne', 'Perth']],
+    ['geography', 'medium', 'What is the capital city of Canada?', 'Ottawa', ['Toronto', 'Vancouver', 'Montreal']],
+    ['geography', 'medium', 'What is the capital city of Brazil?', 'Brasília', ['Rio de Janeiro', 'São Paulo', 'Salvador']],
+    ['geography', 'medium', 'Which is the smallest country in the world?', 'Vatican City', ['Monaco', 'San Marino', 'Liechtenstein']],
+    ['geography', 'hard', 'What is the capital city of Turkey?', 'Ankara', ['Istanbul', 'Izmir', 'Antalya']],
+    ['history', 'easy', 'Who was the first President of the United States?', 'George Washington', ['Abraham Lincoln', 'Thomas Jefferson', 'John Adams']],
+    ['history', 'easy', 'In which year did World War II end?', '1945', ['1939', '1941', '1950']],
+    ['history', 'easy', 'Who painted the Mona Lisa?', 'Leonardo da Vinci', ['Michelangelo', 'Pablo Picasso', 'Vincent van Gogh']],
+    ['history', 'easy', 'Who was the first person to walk on the Moon?', 'Neil Armstrong', ['Buzz Aldrin', 'Yuri Gagarin', 'Michael Collins']],
+    ['history', 'medium', 'In which year did the Titanic sink?', '1912', ['1905', '1920', '1898']],
+    ['history', 'medium', 'In which year did the Berlin Wall fall?', '1989', ['1979', '1991', '1985']],
+    ['history', 'medium', 'In which year did Malaysia (Malaya) become independent?', '1957', ['1945', '1963', '1948']],
+    ['history', 'medium', 'Who discovered penicillin?', 'Alexander Fleming', ['Louis Pasteur', 'Marie Curie', 'Isaac Newton']],
+    ['history', 'hard', 'In which year was the Magna Carta sealed?', '1215', ['1066', '1315', '1415']],
+    ['entertainment', 'easy', 'Which company created Mario?', 'Nintendo', ['Sega', 'Sony', 'Microsoft']],
+    ['entertainment', 'easy', 'In Minecraft, which green mob explodes near players?', 'Creeper', ['Zombie', 'Skeleton', 'Enderman']],
+    ['entertainment', 'easy', 'Who wrote the Harry Potter books?', 'J.K. Rowling', ['Suzanne Collins', 'Roald Dahl', 'J.R.R. Tolkien']],
+    ['entertainment', 'easy', 'Which film features a lion cub named Simba?', 'The Lion King', ['Madagascar', 'Jungle Book', 'Tarzan']],
+    ['entertainment', 'easy', 'What type of Pokémon is Pikachu?', 'Electric', ['Fire', 'Water', 'Grass']],
+    ['entertainment', 'easy', 'In Among Us, what are the bad players called?', 'Impostors', ['Traitors', 'Wolves', 'Spies']],
+    ['entertainment', 'medium', 'Who is known as the "King of Pop"?', 'Michael Jackson', ['Elvis Presley', 'Prince', 'Justin Timberlake']],
+    ['entertainment', 'medium', 'What is the hero\'s name in The Legend of Zelda?', 'Link', ['Zelda', 'Ganon', 'Mario']],
+    ['entertainment', 'medium', 'Which game is the best-selling video game of all time?', 'Minecraft', ['Tetris', 'GTA V', 'Fortnite']],
+];
+
+const WOULD_YOU_RATHER = [
+    ['be able to fly', 'be invisible'], ['have unlimited pizza for life', 'have unlimited ice cream for life'], ['always be 10 minutes late', 'always be 20 minutes early'],
+    ['live in a treehouse', 'live in a houseboat'], ['read minds', 'see the future'], ['never use social media again', 'never watch videos again'],
+    ['fight one horse-sized duck', 'fight 100 duck-sized horses'], ['have a rewind button for your life', 'have a pause button for your life'], ['be the funniest person in the room', 'be the smartest person in the room'],
+    ['live without music', 'live without movies'], ['explore the deep ocean', 'explore outer space'], ['have a pet dragon', 'have a pet unicorn'],
+    ['only eat sweet food forever', 'only eat salty food forever'], ['speak every language', 'talk to animals'], ['always have to sing instead of speaking', 'always have to dance when you walk'],
+    ['have a personal robot butler', 'have a personal chef'], ['live in a world with no internet', 'live in a world with no cars'], ['be famous but poor', 'be unknown but rich'],
+    ['always know when someone is lying', 'always get away with lying'], ['have super speed', 'have super strength'], ['teleport anywhere but only once a day', 'fly but only as fast as walking'],
+    ['never be cold again', 'never be hot again'], ['play only one video game forever', 'never play video games again'], ['have a rooftop pool', 'have a home cinema'],
+    ['sleep only 3 hours and feel fully rested', 'sleep 12 hours and always have amazing dreams'], ['know how you will die', 'know when you will die'], ['wake up every day in a new place', 'live in the same perfect place forever'],
+    ['have no homework or work for a year', 'get paid double for a year'], ['be able to breathe underwater', 'be able to survive in space'], ['always speak your mind', 'never speak again'],
+];
+const TRUTHS = [
+    'What is the most embarrassing thing that ever happened to you?', 'What is your biggest fear?', 'What is the silliest thing you are afraid of?', 'What is a secret talent nobody here knows about?',
+    'What is the last lie you told?', 'What is your most-played song right now?', 'Which app do you spend the most time on?', 'What is the weirdest food you have ever eaten?',
+    'Who was your first celebrity crush?', 'What is the worst gift you ever received?', 'What is a habit you would like to break?', 'What is your most unpopular opinion?',
+    'If you could swap lives with someone here for a day, who would it be?', 'What is the longest you have gone without showering?', 'What was the last thing you searched for on your phone?',
+    'What is your guilty-pleasure TV show?', 'What is the most childish thing you still do?', 'What is the best compliment you ever got?', 'What would you do with a million dollars in one day?',
+    'What is something you pretended to like but actually did not?', 'What is your dream job?', 'What was your worst haircut?', 'What is the strangest dream you remember?',
+    'What is one thing you are proud of this year?', 'Which game have you spent the most hours on?', 'What is the nicest thing someone did for you recently?',
+];
+const DARES = [
+    'Talk in a funny accent for the next 3 messages.', 'Change your nickname to something silly for 10 minutes (ask a mod if you cannot).', 'Send the 5th photo in your gallery (only if you are comfortable!).',
+    'Write a short poem about the person above you in chat.', 'Type with your eyes closed and send a message.', 'Use only emojis for your next 5 messages.', 'Describe your day as if you were a sports commentator.',
+    'Say something nice about everyone currently online.', 'Make up a 3-line rap about this server.', 'Send a message in all capital letters for the next 5 minutes.',
+    'Tell a joke. If nobody laughs, tell another one.', 'Write your next 3 messages without using the letter "e".', 'Draw something with text symbols and send it.',
+    'Share your most-used emoji and explain why.', 'Pretend to be a pirate for the next 5 messages.', 'Compliment the last person who spoke.', 'Share a fun fact you know.',
+    'Set a silly status for the next hour.', 'Write a review of the last thing you ate, like a food critic.', 'Talk like a robot for 3 messages.', 'Describe your favourite game in exactly 10 words.',
+    'Speak only in questions for the next 5 messages.', 'Make up a new word and use it in a sentence.', 'Sing (type) the chorus of any song you like, with the title hidden for others to guess.',
+];
+const JOKES = [
+    ['Why do programmers prefer dark mode?', 'Because light attracts bugs.'], ['Why did the scarecrow win an award?', 'He was outstanding in his field.'], ['What do you call a fake noodle?', 'An impasta.'],
+    ['Why did the computer go to the doctor?', 'It had a virus.'], ['What do you call cheese that is not yours?', 'Nacho cheese.'], ['Why can\'t you trust stairs?', 'They are always up to something.'],
+    ['What did the ocean say to the beach?', 'Nothing, it just waved.'], ['Why did the bicycle fall over?', 'It was two-tired.'], ['What do you call a sleeping bull?', 'A bulldozer.'],
+    ['Why do bees have sticky hair?', 'Because they use honeycombs.'], ['How does a penguin build its house?', 'Igloos it together.'], ['What is a computer\'s favourite snack?', 'Microchips.'],
+    ['Why was the math book sad?', 'It had too many problems.'], ['What did one wall say to the other?', 'I\'ll meet you at the corner.'], ['Why did the gamer bring a ladder?', 'To reach the next level.'],
+    ['What do you call a bear with no teeth?', 'A gummy bear.'], ['Why don\'t eggs tell jokes?', 'They would crack each other up.'], ['What is orange and sounds like a parrot?', 'A carrot.'],
+    ['Why did the cookie go to the doctor?', 'It felt crumbly.'], ['What do you call a dinosaur that crashes his car?', 'Tyrannosaurus Wrecks.'], ['Why do cows wear bells?', 'Because their horns do not work.'],
+    ['What kind of music do planets like?', 'Neptunes.'], ['Why did the mouse need a new keyboard?', 'Its old one had too many cheese-keys. (Okay, a bad one!)'], ['How do you organize a space party?', 'You planet.'],
+    ['What do you call a pile of cats?', 'A meow-ntain.'], ['Why was the broom late?', 'It over-swept.'],
+];
+const EIGHT_BALL = [
+    ['It is certain.', 'good'], ['It is decidedly so.', 'good'], ['Without a doubt.', 'good'], ['Yes, definitely.', 'good'], ['You may rely on it.', 'good'], ['As I see it, yes.', 'good'], ['Most likely.', 'good'], ['Outlook good.', 'good'], ['Yes.', 'good'], ['Signs point to yes.', 'good'],
+    ['Reply hazy, try again.', 'maybe'], ['Ask again later.', 'maybe'], ['Better not tell you now.', 'maybe'], ['Cannot predict now.', 'maybe'], ['Concentrate and ask again.', 'maybe'],
+    ['Do not count on it.', 'bad'], ['My reply is no.', 'bad'], ['My sources say no.', 'bad'], ['Outlook not so good.', 'bad'], ['Very doubtful.', 'bad'],
+];
+// {a} = the person doing it, {b} = the target.
+const ACTIONS = {
+    hug: { emoji: '🤗', text: '{a} gives {b} a big warm hug!', self: '{a} hugs themselves. Here, have a hug from me too! 🤗' },
+    pat: { emoji: '🫳', text: '{a} gently pats {b} on the head.', self: '{a} pats their own head. Good job! 🫳' },
+    highfive: { emoji: '🙌', text: '{a} high-fives {b}! 🙌', self: '{a} high-fives the air. Nice one!' },
+    cuddle: { emoji: '🥰', text: '{a} cuddles {b} tightly.', self: '{a} cuddles a pillow instead.' },
+    poke: { emoji: '👉', text: '{a} pokes {b}. Boop!', self: '{a} pokes themselves. Why though?' },
+    wave: { emoji: '👋', text: '{a} waves hello at {b}!', self: '{a} waves at the mirror.' },
+    bonk: { emoji: '🔨', text: '{a} bonks {b} with a foam hammer. Bonk! 🔨', self: '{a} bonks themselves with a foam hammer. Ouch!' },
+    slap: { emoji: '🐟', text: '{a} slaps {b} with a wet fish. 🐟', self: '{a} slaps themselves with a wet fish. 🐟' },
+    dance: { emoji: '💃', text: '{a} dances with {b}! 🎶', self: '{a} dances alone. Show off! 🎶' },
+    cheer: { emoji: '🎉', text: '{a} cheers for {b}! You can do it! 🎉', self: '{a} cheers for themselves. Well deserved! 🎉' },
+};
+const HANGMAN_WORDS = ['discord', 'server', 'moderator', 'keyboard', 'penguin', 'rainbow', 'elephant', 'volcano', 'treasure', 'adventure', 'chocolate', 'pizza', 'dragon', 'galaxy', 'planet', 'rocket', 'castle', 'jungle',
+    'pirate', 'sandwich', 'umbrella', 'butterfly', 'notebook', 'lantern', 'mountain', 'diamond', 'thunder', 'whisper', 'blanket', 'compass', 'bicycle', 'airplane', 'football', 'basketball', 'guitar', 'camera',
+    'monster', 'puzzle', 'wizard', 'zombie', 'robot', 'island', 'forest', 'garden', 'cookie', 'banana', 'coconut', 'durian', 'monsoon', 'lighthouse', 'pancake', 'popcorn', 'skeleton', 'telescope', 'universe', 'victory', 'champion', 'internet', 'password', 'download'];
+
+module.exports = { TRIVIA_CATEGORIES, TRIVIA, WOULD_YOU_RATHER, TRUTHS, DARES, JOKES, EIGHT_BALL, ACTIONS, HANGMAN_WORDS };
